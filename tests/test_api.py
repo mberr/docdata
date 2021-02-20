@@ -120,6 +120,32 @@ class TestParse(unittest.TestCase):
 
         self._help(A, B)
 
+    def test_parse_no_params_one_newline_functional(self):
+        """Test parsing docdata with no params, and a newline before the delimiter."""
+
+        @parse_docdata()
+        class A:
+            """This class has a docdata.
+
+            ---
+            name: A
+            """
+
+        self._help(A, B)
+
+    def test_parse_no_params_one_newline_alt_delimiter(self):
+        """Test parsing docdata with no params, and a newline before the delimiter."""
+
+        @parse_docdata(delimiter='****')
+        class A:
+            """This class has a docdata.
+
+            ****
+            name: A
+            """
+
+        self._help(A, B)
+
     def test_parse_no_params_many_newline(self):
         """Test parsing docdata with no params, and a newline before the delimiter."""
 

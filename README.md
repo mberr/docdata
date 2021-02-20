@@ -36,8 +36,8 @@ Add structured information to the end of your python docstrings.
 
 ## 💪 Getting Started
 
-Use this package to add structured data to your docstrings in YAML. Just
-add a `---` delimiter at the bottom, and the rest is parsed as YAML.
+Use this package to add structured data to your docstrings in YAML. Just add a `---` delimiter at the bottom, and the
+rest is parsed as YAML.
 
 ```python
 from docdata import parse_docdata, get_docdata
@@ -59,7 +59,28 @@ class MyClass:
 assert {'author': 'Charlie', 'motto': ['docs', 'are', 'cool']} == get_docdata(MyClass)
 ```
 
-If you want to get the data directly, go for `MyClass.__docdata__`.
+If you want to get the data directly, go for `MyClass.__docdata__`. If you want to change the way docdata is parsed,
+like changing the delimiter, use keyword arguments like in:
+
+```python
+from docdata import parse_docdata, get_docdata
+
+
+@parse_docdata(delimiter='****')
+class MyClass:
+    """This is my class.
+
+    ****
+    author: Charlie
+    motto:
+    - docs
+    - are
+    - cool
+    """
+
+
+assert {'author': 'Charlie', 'motto': ['docs', 'are', 'cool']} == get_docdata(MyClass)
+```
 
 ## ⬇️ Installation
 

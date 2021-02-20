@@ -3,7 +3,8 @@
 """Utilities for documentation."""
 
 import textwrap
-from typing import List, Optional, TypeVar
+from functools import partial
+from typing import Callable, List, Optional, TypeVar, Union, cast
 
 import yaml
 
@@ -22,7 +23,7 @@ def get_docdata(obj: X) -> Optional[str]:
     return getattr(obj, DOCDATA_DUNDER, None)
 
 
-def parse_docdata(obj: X, delimiter: str = '---') -> X:
+def parse_docdata(obj: Optional[X] = None, *, delimiter: str = '---') -> Union[X, Callable[[X], X]]:
     """Parse the structured data from the end of the docstr and store it in ``__docdata__``.
 
     The data after the delimiter should be in the YAML form.
@@ -35,6 +36,9 @@ def parse_docdata(obj: X, delimiter: str = '---') -> X:
 
     :raises AttributeError: if the object has no ``__doc__`` field.
     """
+    if obj is None:
+        return cast(Callable[[X], X], partial(parse_docdata, delimiter=delimiter))
+
     try:
         docstr = obj.__doc__
     except AttributeError:

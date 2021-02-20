@@ -7,7 +7,7 @@ Docdata |release| Documentation
    :name: start
 
    installation
-   cli
+   usage
 
 Indices and Tables
 ------------------

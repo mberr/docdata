@@ -45,17 +45,15 @@ class MyClass:
     """This is my class.
 
     ---
-    name: My Class
-    author: Charlie!
-    nested:
-    - this
-    - is
-    - so
-    - great
+    author: Charlie
+    motto:
+    - docs
+    - are
+    - cool
     """
 
 
-assert {'name': 'My Class', 'author': 'Charlie', 'nested': ['this', 'is', 'great']} == docdata(MyClass)
+assert {'author': 'Charlie', 'motto': ['docs', 'are', 'cool']} == docdata(MyClass)
 ```
 
 If you want to get the data directly, go for `MyClass.__docdata__`.

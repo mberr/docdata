@@ -66,9 +66,14 @@ def parse_docdata(obj: X, delimiter: str = '---') -> X:
 
 def _strip_trailing_lines(lines: List[str]) -> List[str]:
     """Strip trailing lines."""
-    try:
-        idx = min(i for i, line in reversed(lines) if line)
-    except ValueError:
-        return lines
-    else:
-        return lines[:idx]
+    found = False
+    rv = []
+    for line in reversed(lines):
+        if found:
+            rv.append(line)
+        elif not line:
+            continue
+        else:
+            found = True
+            rv.append(line)
+    return list(reversed(rv))

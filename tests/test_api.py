@@ -14,16 +14,16 @@ class TestUtils(unittest.TestCase):
     def test_strip_trailing_lines(self):
         """Test stripping trailing lines."""
         for expected, actual in [
-            ([], _strip_trailing_lines([])),
-            (['hello'], _strip_trailing_lines(['hello'])),
-            (['hello'], _strip_trailing_lines(['hello', ''])),
-            (['hello'], _strip_trailing_lines(['hello', '', ''])),
-            (['hello', '', 'goodbye'], _strip_trailing_lines(['hello', '', 'goodbye'])),
-            (['hello', '', 'goodbye'], _strip_trailing_lines(['hello', '', 'goodbye', ''])),
-            (['hello', '', 'goodbye'], _strip_trailing_lines(['hello', '', 'goodbye', '', ''])),
+            ([], []),
+            (['hello'], ['hello']),
+            (['hello'], ['hello', '']),
+            (['hello'], ['hello', '', '']),
+            (['hello', '', 'goodbye'], ['hello', '', 'goodbye']),
+            (['hello', '', 'goodbye'], ['hello', '', 'goodbye', '']),
+            (['hello', '', 'goodbye'], ['hello', '', 'goodbye', '', '']),
         ]:
-            with self.subTest():
-                self.assertEqual(expected, actual)
+            with self.subTest(value=actual):
+                self.assertEqual(expected, _strip_trailing_lines(actual))
 
 
 class B:

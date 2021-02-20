@@ -8,7 +8,7 @@ from typing import List, Optional, TypeVar
 import yaml
 
 __all__ = [
-    'docdata',
+    'get_docdata',
     'parse_docdata',
 ]
 
@@ -17,7 +17,7 @@ X = TypeVar('X')
 DOCDATA_DUNDER = '__docdata__'
 
 
-def docdata(obj: X) -> Optional[str]:
+def get_docdata(obj: X) -> Optional[str]:
     """Get the docdata if it is available."""
     return getattr(obj, DOCDATA_DUNDER, None)
 

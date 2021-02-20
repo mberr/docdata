@@ -4,7 +4,7 @@
 
 import unittest
 
-from docdata import docdata, parse_docdata
+from docdata import get_docdata, parse_docdata
 from docdata.api import _strip_trailing_lines
 
 
@@ -92,8 +92,8 @@ class TestParse(unittest.TestCase):
 
     def _help(self, a, b):
         self.assertEqual(a.__doc__.rstrip(), b.__doc__.rstrip())
-        self.assertIsNone(docdata(b))
-        self.assertEqual({'name': 'A'}, docdata(a))
+        self.assertIsNone(get_docdata(b))
+        self.assertEqual({'name': 'A'}, get_docdata(a))
 
     def test_parse_no_params_no_newline(self):
         """Test parsing docdata with no params, and no trailing space.."""

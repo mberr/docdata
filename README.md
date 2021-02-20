@@ -40,7 +40,7 @@ Use this package to add structured data to your docstrings in YAML. Just
 add a `---` delimiter at the bottom, and the rest is parsed as YAML.
 
 ```python
-from docdata import parse_docdata, docdata
+from docdata import parse_docdata, get_docdata
 
 
 @parse_docdata
@@ -56,7 +56,7 @@ class MyClass:
     """
 
 
-assert {'author': 'Charlie', 'motto': ['docs', 'are', 'cool']} == docdata(MyClass)
+assert {'author': 'Charlie', 'motto': ['docs', 'are', 'cool']} == get_docdata(MyClass)
 ```
 
 If you want to get the data directly, go for `MyClass.__docdata__`.

@@ -3,7 +3,7 @@
 """Utilities for documentation."""
 
 import textwrap
-from typing import Optional, TypeVar
+from typing import List, Optional, TypeVar
 
 import yaml
 
@@ -54,7 +54,7 @@ def parse_docdata(obj: X, delimiter: str = '---') -> X:
 
     # The docstr is all of the lines before the line with the delimiter. No
     # modification to the text wrapping is necessary.
-    obj.__doc__ = '\n'.join(lines[:index])
+    obj.__doc__ = '\n'.join(_strip_trailing_lines(lines[:index]))
 
     # The YAML structured data is on all lines following the line with the delimiter.
     # The text must be dedented before YAML parsing.
@@ -62,3 +62,13 @@ def parse_docdata(obj: X, delimiter: str = '---') -> X:
     yaml_data = yaml.safe_load(yaml_str)
     setattr(obj, DOCDATA_DUNDER, yaml_data)
     return obj
+
+
+def _strip_trailing_lines(lines: List[str]) -> List[str]:
+    """Strip trailing lines."""
+    try:
+        idx = min(i for i, line in reversed(lines) if line)
+    except ValueError:
+        return lines
+    else:
+        return lines[:idx]

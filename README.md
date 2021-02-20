@@ -27,6 +27,9 @@
     <a href='https://docdata.readthedocs.io/en/latest/?badge=latest'>
         <img src='https://readthedocs.org/projects/docdata/badge/?version=latest' alt='Documentation Status' />
     </a>
+    <a href="https://zenodo.org/badge/latestdoi/340714491">
+        <img src="https://zenodo.org/badge/340714491.svg" alt="DOI">
+    </a>
 </p>
 
 Add structured information to the end of your python docstrings.

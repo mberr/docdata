@@ -5,6 +5,25 @@
 import unittest
 
 from docdata import docdata, parse_docdata
+from docdata.api import _strip_trailing_lines
+
+
+class TestUtils(unittest.TestCase):
+    """Test utilities."""
+
+    def test_strip_trailing_lines(self):
+        """Test stripping trailing lines."""
+        for expected, actual in [
+            ([], _strip_trailing_lines([])),
+            (['hello'], _strip_trailing_lines(['hello'])),
+            (['hello'], _strip_trailing_lines(['hello', ''])),
+            (['hello'], _strip_trailing_lines(['hello', '', ''])),
+            (['hello', '', 'goodbye'], _strip_trailing_lines(['hello', '', 'goodbye'])),
+            (['hello', '', 'goodbye'], _strip_trailing_lines(['hello', '', 'goodbye', ''])),
+            (['hello', '', 'goodbye'], _strip_trailing_lines(['hello', '', 'goodbye', '', ''])),
+        ]:
+            with self.subTest():
+                self.assertEqual(expected, actual)
 
 
 class B:

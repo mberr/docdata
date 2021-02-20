@@ -33,20 +33,32 @@ Add structured information to the end of your python docstrings.
 
 ## 💪 Getting Started
 
-> TODO show in a very small amount of space the **MOST** useful thing your package can do.
-Make it as short as possible! You have an entire set of docs for later.
+Use this package to add structured data to your docstrings in YAML. Just
+add a `---` delimiter at the bottom, and the rest is parsed as YAML.
 
-### Command Line Interface
+```python
+from docdata import parse_docdata, docdata
 
-The docdata command line tool is automatically installed. It can
-be used from the shell with the `--help` flag to show all subcommands:
 
-```shell
-$ docdata --help
+@parse_docdata
+class MyClass:
+    """This is my class.
+
+    ---
+    name: My Class
+    author: Charlie!
+    nested:
+    - this
+    - is
+    - so
+    - great
+    """
+
+
+assert {'name': 'My Class', 'author': 'Charlie', 'nested': ['this', 'is', 'great']} == docdata(MyClass)
 ```
 
-> TODO show the most useful thing the CLI does! The CLI will have document auto-generated
-by sphinx.
+If you want to get the data directly, go for `MyClass.__docdata__`.
 
 ## ⬇️ Installation
 
@@ -76,6 +88,7 @@ $ pip install -e .
 The code in this package is licensed under the MIT License.
 
 ## 🙏 Contributing
+
 Contributions, whether filing an issue, making a pull request, or forking, are appreciated. See
 [CONTRIBUTING.rst](https://github.com/cthoyt/docdata/blob/master/CONTRIBUTING.rst) for more information on getting
 involved.
@@ -99,4 +112,5 @@ run reproducibly with:
 $ tox
 ```
 
-Additionally, these tests are automatically re-run with each commit in a [GitHub Action](https://github.com/cthoyt/docdata/actions?query=workflow%3ATests).
+Additionally, these tests are automatically re-run with each commit in
+a [GitHub Action](https://github.com/cthoyt/docdata/actions?query=workflow%3ATests).

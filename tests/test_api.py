@@ -45,7 +45,7 @@ class TestParse(unittest.TestCase):
     """Test parsing docdata."""
 
     def _help(self, a, b):
-        self.assertEqual(a.__doc__, b.__doc__)
+        self.assertEqual(a.__doc__.rstrip(), b.__doc__.rstrip())
         self.assertIsNone(docdata(b))
         self.assertEqual({'name': 'A'}, docdata(a))
 

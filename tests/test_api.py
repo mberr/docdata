@@ -41,6 +41,52 @@ class D:
         self.args = args
 
 
+@parse_docdata
+class C3:
+    """This class has a docdata.
+
+    :param args: Nope.
+
+
+
+    ---
+    name: A
+    """
+
+    def __init__(self, *args):
+        """Initialize the class with dummy args."""
+        self.args = args
+
+
+@parse_docdata
+class C2:
+    """This class has a docdata.
+
+    :param args: Nope.
+
+    ---
+    name: A
+    """
+
+    def __init__(self, *args):
+        """Initialize the class with dummy args."""
+        self.args = args
+
+
+@parse_docdata
+class C1:
+    """This class has a docdata.
+
+    :param args: Nope.
+    ---
+    name: A
+    """
+
+    def __init__(self, *args):
+        """Initialize the class with dummy args."""
+        self.args = args
+
+
 class TestParse(unittest.TestCase):
     """Test parsing docdata."""
 
@@ -91,58 +137,12 @@ class TestParse(unittest.TestCase):
 
     def test_parse_with_params_no_newline(self):
         """Test parsing docdata."""
-
-        @parse_docdata
-        class C:
-            """This class has a docdata.
-
-            :param args: Nope.
-            ---
-            name: A
-            """
-
-            def __init__(self, *args):
-                """Initialize the class with dummy args."""
-                self.args = args
-
-        self._help(C, D)
+        self._help(C1, D)
 
     def test_parse_with_params_one_newline(self):
         """Test parsing docdata."""
-
-        @parse_docdata
-        class C:
-            """This class has a docdata.
-
-            :param args: Nope.
-
-            ---
-            name: A
-            """
-
-            def __init__(self, *args):
-                """Initialize the class with dummy args."""
-                self.args = args
-
-        self._help(C, D)
+        self._help(C2, D)
 
     def test_parse_with_params_many_newline(self):
         """Test parsing docdata."""
-
-        @parse_docdata
-        class C:
-            """This class has a docdata.
-
-            :param args: Nope.
-
-
-
-            ---
-            name: A
-            """
-
-            def __init__(self, *args):
-                """Initialize the class with dummy args."""
-                self.args = args
-
-        self._help(C, D)
+        self._help(C3, D)

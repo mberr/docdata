@@ -56,7 +56,10 @@ class MyClass:
     """
 
 
-assert {'author': 'Charlie', 'motto': ['docs', 'are', 'cool']} == get_docdata(MyClass)
+assert get_docdata(MyClass) == {
+    'author': 'Charlie',
+    'motto': ['docs', 'are', 'cool'],
+}
 ```
 
 If you want to get the data directly, go for `MyClass.__docdata__`. If you want to change the way docdata is parsed,
@@ -79,7 +82,10 @@ class MyClass:
     """
 
 
-assert {'author': 'Charlie', 'motto': ['docs', 'are', 'cool']} == get_docdata(MyClass)
+assert get_docdata(MyClass) == {
+    'author': 'Charlie',
+    'motto': ['docs', 'are', 'cool'],
+}
 ```
 
 ## ⬇️ Installation

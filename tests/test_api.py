@@ -172,3 +172,26 @@ class TestParse(unittest.TestCase):
     def test_parse_with_params_many_newline(self):
         """Test parsing docdata."""
         self._help(C3, D)
+
+    def test_formatter(self):
+        """Test the formatter."""
+
+        def formatter(data):
+            """Format the data."""
+            return f'\n\n{data["name"]} is rated {data["rating"]}'
+
+        @parse_docdata(delimiter='****', formatter=formatter)
+        class A:
+            """This class has a docdata.
+
+            ****
+            name: Stacy Pilgrim
+            rating: T for Teen
+            """
+
+        self.assertEqual(
+            """This class has a docdata.
+
+Stacy Pilgrim is rated T for Teen""",
+            A.__doc__,
+        )

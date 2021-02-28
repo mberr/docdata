@@ -4,7 +4,7 @@
 
 import textwrap
 from functools import partial
-from typing import Callable, List, Optional, TypeVar, Union, cast
+from typing import Any, Callable, List, Optional, TypeVar, Union, cast
 
 import yaml
 
@@ -18,12 +18,17 @@ X = TypeVar('X')
 DOCDATA_DUNDER = '__docdata__'
 
 
-def get_docdata(obj: X) -> Optional[str]:
+def get_docdata(obj: X) -> Any:
     """Get the docdata if it is available."""
     return getattr(obj, DOCDATA_DUNDER, None)
 
 
-def parse_docdata(obj: Optional[X] = None, *, delimiter: str = '---') -> Union[X, Callable[[X], X]]:
+def parse_docdata(
+    obj: Optional[X] = None,
+    *,
+    delimiter: str = '---',
+    formatter: Optional[Callable[[Any], str]] = None,
+) -> Union[X, Callable[[X], X]]:
     """Parse the structured data from the end of the docstr and store it in ``__docdata__``.
 
     The data after the delimiter should be in the YAML form.
@@ -32,12 +37,17 @@ def parse_docdata(obj: Optional[X] = None, *, delimiter: str = '---') -> Union[X
 
     :param obj: Any object that can has a ``__doc__`` field.
     :param delimiter: The delimiter between the actual docstring and structured YAML.
+    :param formatter: A function that takes the parsed docdata and turns it into more documentation
     :return: The same object with a modified docstr.
 
     :raises AttributeError: if the object has no ``__doc__`` field.
     """
     if obj is None:
-        return cast(Callable[[X], X], partial(parse_docdata, delimiter=delimiter))
+        return cast(Callable[[X], X], partial(
+            parse_docdata,
+            delimiter=delimiter,
+            formatter=formatter,
+        ))
 
     try:
         docstr = obj.__doc__
@@ -65,6 +75,11 @@ def parse_docdata(obj: Optional[X] = None, *, delimiter: str = '---') -> Union[X
     yaml_str = textwrap.dedent('\n'.join(lines[index + 1:]))
     yaml_data = yaml.safe_load(yaml_str)
     setattr(obj, DOCDATA_DUNDER, yaml_data)
+
+    # Automagically write more docs based on the yaml data
+    if formatter is not None:
+        obj.__doc__ += formatter(yaml_data)
+
     return obj
 
 

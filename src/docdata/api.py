@@ -1,21 +1,19 @@
-# -*- coding: utf-8 -*-
-
 """Utilities for documentation."""
 
 import textwrap
 from functools import partial
-from typing import Any, Callable, List, Optional, TypeVar, Union, cast
+from typing import Any, Callable, Optional, TypeVar, Union, cast
 
 import yaml
 
 __all__ = [
-    'get_docdata',
-    'parse_docdata',
+    "get_docdata",
+    "parse_docdata",
 ]
 
-X = TypeVar('X')
+X = TypeVar("X")
 
-DOCDATA_DUNDER = '__docdata__'
+DOCDATA_DUNDER = "__docdata__"
 
 
 def get_docdata(obj: X) -> Any:
@@ -26,7 +24,7 @@ def get_docdata(obj: X) -> Any:
 def parse_docdata(
     obj: Optional[X] = None,
     *,
-    delimiter: str = '---',
+    delimiter: str = "---",
     formatter: Optional[Callable[[Any], str]] = None,
 ) -> Union[X, Callable[[X], X]]:
     """Parse the structured data from the end of the docstr and store it in ``__docdata__``.
@@ -43,36 +41,35 @@ def parse_docdata(
     :raises AttributeError: if the object has no ``__doc__`` field.
     """
     if obj is None:
-        return cast(Callable[[X], X], partial(
-            parse_docdata,
-            delimiter=delimiter,
-            formatter=formatter,
-        ))
+        return cast(
+            Callable[[X], X],
+            partial(
+                parse_docdata,
+                delimiter=delimiter,
+                formatter=formatter,
+            ),
+        )
 
     try:
         docstr = obj.__doc__
     except AttributeError:
-        raise AttributeError(f'no __doc__ available in {obj}')
+        raise AttributeError(f"no __doc__ available in {obj}") from None
     if docstr is None:  # no docstr to modify
         return obj
 
     lines = docstr.splitlines()
     try:
-        index = min(
-            i
-            for i, line in enumerate(lines)
-            if line.strip() == delimiter
-        )
+        index = min(i for i, line in enumerate(lines) if line.strip() == delimiter)
     except ValueError:
         return obj
 
-    # The docstr is all of the lines before the line with the delimiter. No
+    # The docstr is all the lines before the line with the delimiter. No
     # modification to the text wrapping is necessary.
-    obj.__doc__ = '\n'.join(_strip_trailing_lines(lines[:index]))
+    obj.__doc__ = "\n".join(_strip_trailing_lines(lines[:index]))
 
     # The YAML structured data is on all lines following the line with the delimiter.
     # The text must be dedented before YAML parsing.
-    yaml_str = textwrap.dedent('\n'.join(lines[index + 1:]))
+    yaml_str = textwrap.dedent("\n".join(lines[index + 1 :]))
     yaml_data = yaml.safe_load(yaml_str)
     setattr(obj, DOCDATA_DUNDER, yaml_data)
 
@@ -83,7 +80,7 @@ def parse_docdata(
     return obj
 
 
-def _strip_trailing_lines(lines: List[str]) -> List[str]:
+def _strip_trailing_lines(lines: list[str]) -> list[str]:
     """Strip trailing lines."""
     found = False
     rv = []

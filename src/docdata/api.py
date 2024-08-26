@@ -4,7 +4,7 @@
 
 import textwrap
 from functools import partial
-from typing import Any, Callable, List, Optional, TypeVar, Union, cast
+from typing import Any, Callable, List, Optional, TypeVar, Union, cast, overload
 
 import yaml
 
@@ -22,6 +22,23 @@ def get_docdata(obj: X) -> Any:
     """Get the docdata if it is available."""
     return getattr(obj, DOCDATA_DUNDER, None)
 
+@overload
+def parse_docdata(
+    obj: None = None,
+    *,
+    delimiter: str = '---',
+    formatter: Optional[Callable[[Any], str]] = None,
+) -> Callable[[X], X]:
+    ...
+
+@overload
+def parse_docdata(
+    obj: X,
+    *,
+    delimiter: str = '---',
+    formatter: Optional[Callable[[Any], str]] = None,
+) -> X:
+    ...
 
 def parse_docdata(
     obj: Optional[X] = None,

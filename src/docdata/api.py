@@ -21,20 +21,22 @@ def get_docdata(obj: X) -> Any:
     return getattr(obj, DOCDATA_DUNDER, None)
 
 
+# docstr-coverage:inherited
 @overload
 def parse_docdata(
-    obj: None = None,
+    obj: None,
     *,
-    delimiter: str = "---",
+    delimiter: str,
     formatter: Optional[Callable[[Any], str]] = None,
 ) -> Callable[[X], X]: ...
 
 
+# docstr-coverage:inherited
 @overload
 def parse_docdata(
     obj: X,
     *,
-    delimiter: str = "---",
+    delimiter: str,
     formatter: Optional[Callable[[Any], str]] = None,
 ) -> X: ...
 
